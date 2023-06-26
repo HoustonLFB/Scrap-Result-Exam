@@ -1,0 +1,14 @@
+National :
+DNB : https://cyclades.education.gouv.fr/candidat/publication/DNB
+
+CAP : https://cyclades.education.gouv.fr/candidat/publication/CAP
+BAC GEN TECHNO (BGT) : https://cyclades.education.gouv.fr/candidat/publication/BGT
+BAC PRO (BCP) : https://cyclades.education.gouv.fr/candidat/publication/BCP
+BTS : https://cyclades.education.gouv.fr/candidat/publication/BTS
+
+ETANGER :
+DNB  : https://cyclades.education.gouv.fr/candidat/publication/DNB/CTE
+BGT : https://cyclades.education.gouv.fr/candidat/publication/BGT/CTE
+
+CODE ACADEMIE TOULOUSE : A16
+https://www.ac-toulouse.fr/publication-des-resultats-121545

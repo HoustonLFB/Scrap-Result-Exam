@@ -5,7 +5,7 @@ import openpyxl
 import os
 
 def findAcademie(chaine):
-    academie = chaine.split(" -")
+    academie = chaine.split(" - ")
     nomAcademie = academie[0]
     nomAcademie = nomAcademie.replace("Académie de ", "")
     nomAcademie = nomAcademie.replace("Académie d' ", "")
@@ -47,7 +47,7 @@ def txtToArray():
     urls = []
 
     #OUVRE LE FICHIER URL.txt ET SCRAP LIGNE PAR LIGNE
-    fichier = open('autoUrlsScrapped.txt', 'r')
+    fichier = open('autoUrlsScrapped_1.txt', 'r')
     lignes = fichier.readlines()
 
     for ligne in lignes:
@@ -96,7 +96,7 @@ for url in urls:
     except Exception as e:
         print(e)
 
-    excelName = academie + " -" + nameExam
+    excelName = academie + " - " + nameExam
     excelName = excelName[:-1]
     excelName = excelName + ".xlsx"
 

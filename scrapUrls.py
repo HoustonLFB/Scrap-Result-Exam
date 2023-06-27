@@ -2,7 +2,7 @@ import os
 import scrapHtml
 from bs4 import BeautifulSoup
 
-publications = "https://cyclades.education.gouv.fr/candidat/publication/BTS"
+publications = "https://cyclades.education.gouv.fr/candidat/publication/BGT"
 
 source = scrapHtml.scrap(publications)
 

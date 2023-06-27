@@ -1,21 +1,53 @@
 from bs4 import BeautifulSoup
-import scrapStudents
+import scrapHtml
+import dataOrganize
 import openpyxl
 import os
 
 def findAcademie(chaine):
-    academie = chaine.split("-")
-    academie = academie[0]
-    academie = academie.replace("Académie de ", "")
-    academie = academie.replace(" ", "")
-    return academie
+    academie = chaine.split(" -")
+    nomAcademie = academie[0]
+    nomAcademie = nomAcademie.replace("Académie de ", "")
+    nomAcademie = nomAcademie.replace("Académie d' ", "")
+
+    if nomAcademie == "Normandie":
+        nomAcademie = academie[1] 
+
+    nomAcademie = nomAcademie.replace(" ", "")
+
+    return nomAcademie
+
+def findExam(chaine):
+    exam = chaine.split(" - ")
+    nomExam = exam[1]
+    
+    if exam[0] == " SIEC" or exam[0] == " Académie de Normandie" or exam[0] == " Académie de Orléans":
+        nomExam = exam[2]
+    
+    nomExam = nomExam[:-1]
+    nomExam = nomExam.replace(" ", "_")
+    return nomExam
+
+def findSession(chaine):
+    session = chaine.split(" - ")
+    session = session[0]
+    session = session.replace(" ", "")
+    return session
+
+def findGroupe(chaine):
+    groupe = chaine.split(" - ")
+    groupe = groupe[1]
+    groupe = groupe[:-1]
+    groupe = groupe.replace(" ", "_")
+    return groupe
+
 
 def txtToArray():
 
     urls = []
 
     #OUVRE LE FICHIER URL.txt ET SCRAP LIGNE PAR LIGNE
-    fichier = open('URL.txt', 'r')
+    fichier = open('autoUrlsScrapped.txt', 'r')
     lignes = fichier.readlines()
 
     for ligne in lignes:
@@ -24,6 +56,7 @@ def txtToArray():
             urls.append(ligne)
     return urls
 
+dataOrganize.baseFolderCreate()
 
 urls = txtToArray()
 
@@ -33,7 +66,7 @@ for url in urls:
     sheet = excel.active
 
     try:
-        source = scrapStudents.scrap(url)
+        source = scrapHtml.scrap(url)
 
         soup = BeautifulSoup(source, 'html.parser')
 
@@ -42,9 +75,12 @@ for url in urls:
         nameExam = soup.find('main').find("div", class_="fr-container").find("h3").text
 
         academie = findAcademie(academieExam)
+        exam = findExam(academieExam)
+        session = findSession(sessionExam)
+        groupe = findGroupe(sessionExam)
 
-        nameExam = nameExam[:30] #LIMITER à 30 CARACTERES
-        sheet.title = nameExam
+        nameExamShort = nameExam[:30] #LIMITER à 30 CARACTERES
+        sheet.title = nameExamShort
         sheet.append([academieExam, sessionExam, nameExam])
 
         eleves = soup.find('tbody').find_all('tr')
@@ -64,18 +100,21 @@ for url in urls:
     excelName = excelName[:-1]
     excelName = excelName + ".xlsx"
 
-    #SI FICHIER EXISTE DEJA
-    if not os.path.exists(excelName):
-        excel.save(excelName)
-        print(excelName + " sauvegardé")
-        
-    else:
-        yesNo = input(excelName + " existe déjà. Le remplacer ? (Y/N)")
+    basename, extension = os.path.splitext(excelName)
 
-        if (yesNo.lower() == "y" or yesNo.lower() == "o" ) :
-            excel.save(excelName)
-            print(excelName + " remplacé et sauvegardé")
+    counter = 1
+    new_filename = excelName
 
+    while os.path.exists(new_filename):
+        new_filename = f'{basename}_{counter}{extension}'
+        counter += 1
 
+    path = f"data\\{academie}\\{exam}\\{session}\\{groupe}\\"
 
+    print(path)
+    dataOrganize.verifFolderCreate(path)
 
+    pathFile = path + excelName
+
+    excel.save(pathFile)
+    print(excelName + " sauvegardé dans " + pathFile)

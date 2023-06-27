@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+import time
 
 def scrap(url):
 
@@ -18,9 +19,11 @@ def scrap(url):
 
     # Créer une instance du navigateur Chrome
     driver = webdriver.Chrome(service=service, options=options)
-
+    
     driver.get(url) 
 
+    #ATTENDRE 3 SEC
+    time.sleep(3)
 
     html = driver.page_source
 

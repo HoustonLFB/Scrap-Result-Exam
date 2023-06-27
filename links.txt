@@ -6,7 +6,7 @@ BAC GEN TECHNO (BGT) : https://cyclades.education.gouv.fr/candidat/publication/B
 BAC PRO (BCP) : https://cyclades.education.gouv.fr/candidat/publication/BCP
 BTS : https://cyclades.education.gouv.fr/candidat/publication/BTS
 
-ETANGER :
+ETRANGER :
 DNB  : https://cyclades.education.gouv.fr/candidat/publication/DNB/CTE
 BGT : https://cyclades.education.gouv.fr/candidat/publication/BGT/CTE
 

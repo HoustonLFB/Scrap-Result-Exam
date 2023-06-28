@@ -18,20 +18,9 @@ for url in urls:
     print(link)
     links.append(link)
 
-nomFichier = 'autoUrlsScrapped.txt'
+nomFichier = 'AllautoUrlsScrapped.txt'
 
-basename, extension = os.path.splitext(nomFichier)
-
-counter = 1
-new_filename = nomFichier
-
-while os.path.exists(new_filename):
-    new_filename = f'{basename}_{counter}{extension}'
-    counter += 1
-
-with open(new_filename, 'w') as fichier:
+with open(nomFichier, 'w') as fichier:
     # Écrire le contenu du fichier si nécessaire
     for link in links:
         fichier.write(link + '\n')
-
-print(f'{new_filename} a été créé.')

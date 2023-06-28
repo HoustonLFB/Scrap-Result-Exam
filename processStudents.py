@@ -12,10 +12,11 @@ def findAcademie(chaine):
 
     if nomAcademie == "Normandie":
         nomAcademie = academie[1] 
-    if nomAcademie == " SIEC":
-        nomAcademie == "SIEC"
-
+    
     nomAcademie = nomAcademie.replace(" ", "_")
+
+    if nomAcademie == "_SIEC":
+        nomAcademie == "SIEC"
 
     return nomAcademie
 

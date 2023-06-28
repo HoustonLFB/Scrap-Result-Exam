@@ -12,8 +12,10 @@ def findAcademie(chaine):
 
     if nomAcademie == "Normandie":
         nomAcademie = academie[1] 
+    if nomAcademie == " SIEC":
+        nomAcademie == "SIEC"
 
-    nomAcademie = nomAcademie.replace(" ", "")
+    nomAcademie = nomAcademie.replace(" ", "_")
 
     return nomAcademie
 
@@ -41,13 +43,12 @@ def findGroupe(chaine):
     groupe = groupe.replace(" ", "_")
     return groupe
 
-
 def txtToArray():
 
     urls = []
 
     #OUVRE LE FICHIER URL.txt ET SCRAP LIGNE PAR LIGNE
-    fichier = open('autoUrlsScrapped_1.txt', 'r')
+    fichier = open('autoUrlsScrapped.txt', 'r')
     lignes = fichier.readlines()
 
     for ligne in lignes:
@@ -55,6 +56,22 @@ def txtToArray():
         if not ligne.startswith("#"):
             urls.append(ligne)
     return urls
+
+def isNone(var):
+    if var == None:
+        return True
+    else: 
+        return False
+
+def incrAlreadyExist(oldName):
+    basename, extension = os.path.splitext(oldName)
+    counter = 1
+    new_filename = oldName
+
+    while os.path.exists(path + new_filename):
+        new_filename = f'{basename}_{counter}{extension}'
+        counter += 1
+    return new_filename
 
 dataOrganize.baseFolderCreate()
 
@@ -65,56 +82,76 @@ for url in urls:
     excel = openpyxl.Workbook()
     sheet = excel.active
 
-    try:
-        source = scrapHtml.scrap(url)
+    source = scrapHtml.scrap(url)
+    soup = BeautifulSoup(source, 'html.parser')
 
-        soup = BeautifulSoup(source, 'html.parser')
+    academieExam = soup.find('main').find("h1").text
+    sessionExam = soup.find('main').find("p").text
+    specialiteExam = soup.find('main').find("h3")
 
-        academieExam = soup.find('main').find("div", class_="fr-container", ).find("h1").text
-        sessionExam = soup.find('main').find("div", class_="fr-container").find("p").text
-        nameExam = soup.find('main').find("div", class_="fr-container").find("h3").text
+    #S'IL Y A SPECIALITE
+    if not isNone(specialiteExam):
+        specialiteExam = specialiteExam.text
+        specialiteExam = specialiteExam[1:]
+        specialiteExam = specialiteExam.replace(" ", "_")
 
-        academie = findAcademie(academieExam)
-        exam = findExam(academieExam)
-        session = findSession(sessionExam)
-        groupe = findGroupe(sessionExam)
+    academie = findAcademie(academieExam)
+    exam = findExam(academieExam)
+    session = findSession(sessionExam)
+    groupe = findGroupe(sessionExam)
 
-        nameExamShort = nameExam[:30] #LIMITER à 30 CARACTERES
+    #S'IL Y A SPECIALITE
+    if not isNone(specialiteExam):
+        nameExamShort = specialiteExam.replace(":", "")
+        nameExamShort = nameExamShort[:30] #LIMITER à 30 CARACTERES
         sheet.title = nameExamShort
-        sheet.append([academieExam, sessionExam, nameExam])
-
+        sheet.append([academieExam, sessionExam, specialiteExam])
+    else: 
+        sheet.title = academie
+        sheet.append([academieExam, sessionExam])
+    try:
         eleves = soup.find('tbody').find_all('tr')
 
         for eleve in eleves:
-            
+        
             nom = eleve.find('td', class_="mat-column-nom").find('span').text
             prenoms = eleve.find('td', class_="mat-column-prenoms").text
             resultat = eleve.find('td', class_="mat-column-resultat").text
 
             sheet.append([nom, prenoms, resultat])
-
     except Exception as e:
         print(e)
 
-    excelName = academie + " - " + nameExam
-    excelName = excelName[:-1]
-    excelName = excelName + ".xlsx"
-
-    basename, extension = os.path.splitext(excelName)
-
-    counter = 1
-    new_filename = excelName
-
-    while os.path.exists(new_filename):
-        new_filename = f'{basename}_{counter}{extension}'
-        counter += 1
-
+    #S'IL Y A SPECIALITE
+    if not isNone(specialiteExam):
+        excelName = specialiteExam
+        excelName = excelName[:-1]
+        excelName = excelName + ".xlsx"
+    else: 
+        excelName = academie
+        excelName = excelName + ".xlsx"
+    
     path = f"data\\{academie}\\{exam}\\{session}\\{groupe}\\"
-
-    print(path)
     dataOrganize.verifFolderCreate(path)
+    
+    tempPathFile = "tmp\\" + excelName
 
-    pathFile = path + excelName
+    maybeOldPathFile = path + excelName
 
-    excel.save(pathFile)
-    print(excelName + " sauvegardé dans " + pathFile)
+    excel.save(tempPathFile)
+
+    if dataOrganize.fichierExisteIdentique(maybeOldPathFile, tempPathFile):
+        os.remove(tempPathFile)
+    else:
+        newExcelName = incrAlreadyExist(excelName)
+
+        pathFile = path + newExcelName
+
+        os.remove(tempPathFile)
+        excel.save(pathFile)
+        print(newExcelName + " sauvegardé dans " + pathFile)
+
+
+    
+
+scrapHtml.quitDriver()

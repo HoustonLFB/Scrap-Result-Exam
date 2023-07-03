@@ -1,6 +1,8 @@
 # Scrap-Result-Exam
 
-Récupère les urls des publications puis récupère tous les élèves des publications et les place dans un Excel .xlsx.
+Récupère chaque publication de résulats à date puis récupère tous les élèves des publications et les place dans un Excel .xlsx.
+
+Pour récupérer les données : voir les git branch (WIP) 
 
 ## Requirements
 

@@ -1,3 +1,12 @@
 #METTRE LES PAGES DES PUBLICATIONS UNE PAR LIGNE
-https://cyclades.education.gouv.fr/candidat/publication/BTS/A16/admis?contexte=QlRTLEExNiwyMDIzLTAzOkExNjpBOkJUUy0xLjIsMSwzMzEwNzozMjA6QlRTLTE6QTpCVFMtMS4yLCws
-https://cyclades.education.gouv.fr/candidat/publication/BTS/A16/admis?contexte=QlRTLEExNiwyMDIzLTA2OkExNjpBOkJUUy0xLjIsMSwzMTIxNjozMjA6QlRTLTE6QTpCVFMtMS4yLCws
+https://cyclades.education.gouv.fr/candidat/publication/DNB
+https://cyclades.education.gouv.fr/candidat/publication/CFG
+https://cyclades.education.gouv.fr/candidat/publication/CAP
+https://cyclades.education.gouv.fr/candidat/publication/BGT
+https://cyclades.education.gouv.fr/candidat/publication/BCP
+https://cyclades.education.gouv.fr/candidat/publication/CGL
+https://cyclades.education.gouv.fr/candidat/publication/BP
+https://cyclades.education.gouv.fr/candidat/publication/MC3
+https://cyclades.education.gouv.fr/candidat/publication/MC4
+https://cyclades.education.gouv.fr/candidat/publication/BTS
+https://cyclades.education.gouv.fr/candidat/publication/DCS

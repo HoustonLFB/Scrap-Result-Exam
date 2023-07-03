@@ -1,22 +1,38 @@
-import os
 import scrapHtml
 from bs4 import BeautifulSoup
 
-publications = "https://cyclades.education.gouv.fr/candidat/publication/BGT"
+def txtToArray():
 
-source = scrapHtml.scrap(publications)
+    urls = []
 
-soup = BeautifulSoup(source, 'html.parser')
+    #OUVRE LE FICHIER URL.txt ET SCRAP LIGNE PAR LIGNE
+    fichier = open('URL.txt', 'r')
+    lignes = fichier.readlines()
 
-urls = soup.find_all('a', class_='fr-link')
+    for ligne in lignes:
+        ligne = ligne.strip()
+        if not ligne.startswith("#"):
+            urls.append(ligne)
+    return urls
+
+
+publications = txtToArray()
 
 links = []
 
-for url in urls:
-    href = url['href']
-    link = "https://cyclades.education.gouv.fr" + href
-    print(link)
-    links.append(link)
+for publication in publications:
+
+    source = scrapHtml.scrap(publication)
+
+    soup = BeautifulSoup(source, 'html.parser')
+
+    urls = soup.find_all('a', class_='fr-link')
+
+    for url in urls:
+        href = url['href']
+        link = "https://cyclades.education.gouv.fr" + href
+        print(link)
+        links.append(link)
 
 nomFichier = 'AllautoUrlsScrapped.txt'
 
@@ -24,3 +40,5 @@ with open(nomFichier, 'w') as fichier:
     # Écrire le contenu du fichier si nécessaire
     for link in links:
         fichier.write(link + '\n')
+
+scrapHtml.quitDriver()

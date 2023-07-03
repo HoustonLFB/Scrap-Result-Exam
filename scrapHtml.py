@@ -1,12 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
 
 # start by defining the options 
     # Spécifiez le chemin vers votre fichier ChromeDriver
-PATH_TO_CHROMEDRIVER = 'C:\chromedriver\chromedriver.exe'
+PATH_TO_CHROMEDRIVER = 'C:\chromedriver.exe'
 
     # Configurer les options du navigateur
 options = Options()

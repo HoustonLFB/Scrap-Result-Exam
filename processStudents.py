@@ -7,16 +7,14 @@ import os
 def findAcademie(chaine):
     academie = chaine.split(" - ")
     nomAcademie = academie[0]
+    nomAcademie = nomAcademie[1:]
     nomAcademie = nomAcademie.replace("Académie de ", "")
-    nomAcademie = nomAcademie.replace("Académie d' ", "")
+    nomAcademie = nomAcademie.replace("Académie d'", "")
 
     if nomAcademie == "Normandie":
         nomAcademie = academie[1] 
     
     nomAcademie = nomAcademie.replace(" ", "_")
-
-    if nomAcademie == "_SIEC":
-        nomAcademie == "SIEC"
 
     return nomAcademie
 
@@ -49,7 +47,7 @@ def txtToArray():
     urls = []
 
     #OUVRE LE FICHIER URL.txt ET SCRAP LIGNE PAR LIGNE
-    fichier = open('autoUrlsScrapped.txt', 'r')
+    fichier = open('03072023.txt', 'r')
     lignes = fichier.readlines()
 
     for ligne in lignes:
@@ -95,6 +93,8 @@ for url in urls:
         specialiteExam = specialiteExam.text
         specialiteExam = specialiteExam[1:]
         specialiteExam = specialiteExam.replace(" ", "_")
+        specialiteExam = specialiteExam.replace("/", "_")
+        specialiteExam = specialiteExam.replace('"', '')
 
     academie = findAcademie(academieExam)
     exam = findExam(academieExam)
@@ -104,6 +104,8 @@ for url in urls:
     #S'IL Y A SPECIALITE
     if not isNone(specialiteExam):
         nameExamShort = specialiteExam.replace(":", "")
+        nameExamShort = nameExamShort.replace("/", "_")
+        nameExamShort = nameExamShort.replace('"', '')
         nameExamShort = nameExamShort[:30] #LIMITER à 30 CARACTERES
         sheet.title = nameExamShort
         sheet.append([academieExam, sessionExam, specialiteExam])
@@ -151,8 +153,5 @@ for url in urls:
         os.remove(tempPathFile)
         excel.save(pathFile)
         print(newExcelName + " sauvegardé dans " + pathFile)
-
-
-    
 
 scrapHtml.quitDriver()

@@ -1,14 +1,14 @@
 National :
-DNB : https://cyclades.education.gouv.fr/candidat/publication/DNB
+DNB (860k): https://cyclades.education.gouv.fr/candidat/publication/DNB
 CFG : https://cyclades.education.gouv.fr/candidat/publication/CFG
 CAP : https://cyclades.education.gouv.fr/candidat/publication/CAP
-BAC GEN TECHNO (BGT) : https://cyclades.education.gouv.fr/candidat/publication/BGT
-BAC PRO (BCP) : https://cyclades.education.gouv.fr/candidat/publication/BCP
-CGL : https://cyclades.education.gouv.fr/candidat/publication/CGL
+BAC GEN TECHNO (BGT) (535 k): https://cyclades.education.gouv.fr/candidat/publication/BGT
+BAC PRO (BCP) (182k): https://cyclades.education.gouv.fr/candidat/publication/BCP
+CGL (19k): https://cyclades.education.gouv.fr/candidat/publication/CGL
 BP : https://cyclades.education.gouv.fr/candidat/publication/BP
 MC3 : https://cyclades.education.gouv.fr/candidat/publication/MC3
 MC4 : https://cyclades.education.gouv.fr/candidat/publication/MC4
-BTS : https://cyclades.education.gouv.fr/candidat/publication/BTS
+BTS (262k): https://cyclades.education.gouv.fr/candidat/publication/BTS
 DCS : https://cyclades.education.gouv.fr/candidat/publication/DCS
 
 CODE ACADEMIE TOULOUSE : A16

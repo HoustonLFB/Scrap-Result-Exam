@@ -10,6 +10,7 @@ PATH_TO_CHROMEDRIVER = 'C:\chromedriver.exe'
     # Configurer les options du navigateur
 options = Options()
 options.add_argument("--headless")  # Exécuter en mode headless (sans interface graphique)
+options.add_argument("--log-level=3")
 
     # Créer une instance du service ChromeDriver
 service = Service(PATH_TO_CHROMEDRIVER)

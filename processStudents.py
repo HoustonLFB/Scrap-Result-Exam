@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import scrapHtml
-import dataOrganize
+import bddSql
 import openpyxl
 import os
 
@@ -26,6 +26,8 @@ def findExam(chaine):
         nomExam = exam[2]
     
     nomExam = nomExam[:-1]
+    nomExam = nomExam.replace('"', "_")
+    nomExam = nomExam.replace("'", "_")
     nomExam = nomExam.replace(" ", "_")
     return nomExam
 
@@ -42,12 +44,20 @@ def findGroupe(chaine):
     groupe = groupe.replace(" ", "_")
     return groupe
 
+def estEtranger(academie):
+    liste = ["Normandie", "Caen", "Rouen", "Rennes", "Nantes", "Poitiers", "Bordeaux", "Toulouse", "Montpellier", "Aix-Marseille", "Nice", "Grenoble", "Lyon", "Clermont-Ferrand", "Limoges", "Orléans-Tours", "Dijon", "Besançon", "Strasbourg", "Nancy-Metz", "Reims", "Lille", "SIEC", "Amiens", "Corse", "Martinique", "Guadeloupe", "La_Réunion", "Guyane", "Mayotte", "Nouvelle-Calédonie", "Polynésie_Française", "St_Pierre_Et_Miquelon"]
+
+    if academie in liste:
+        return "0"
+    else: 
+        return "1"
+
 def txtToArray():
 
     urls = []
 
     #OUVRE LE FICHIER URL.txt ET SCRAP LIGNE PAR LIGNE
-    fichier = open('03072023.txt', 'r')
+    fichier = open('02082023.txt', 'r')
     lignes = fichier.readlines()
 
     for ligne in lignes:
@@ -61,18 +71,6 @@ def isNone(var):
         return True
     else: 
         return False
-
-def incrAlreadyExist(oldName):
-    basename, extension = os.path.splitext(oldName)
-    counter = 1
-    new_filename = oldName
-
-    while os.path.exists(path + new_filename):
-        new_filename = f'{basename}_{counter}{extension}'
-        counter += 1
-    return new_filename
-
-dataOrganize.baseFolderCreate()
 
 urls = txtToArray()
 
@@ -92,26 +90,21 @@ for url in urls:
     if not isNone(specialiteExam):
         specialiteExam = specialiteExam.text
         specialiteExam = specialiteExam[1:]
+
+        if specialiteExam[-1] == " ":
+            specialiteExam = specialiteExam[:-1]
+
         specialiteExam = specialiteExam.replace(" ", "_")
         specialiteExam = specialiteExam.replace("/", "_")
         specialiteExam = specialiteExam.replace('"', '')
+        specialiteExam = specialiteExam.replace("'", '_')
 
     academie = findAcademie(academieExam)
     exam = findExam(academieExam)
     session = findSession(sessionExam)
     groupe = findGroupe(sessionExam)
+    etranger = estEtranger(academie)
 
-    #S'IL Y A SPECIALITE
-    if not isNone(specialiteExam):
-        nameExamShort = specialiteExam.replace(":", "")
-        nameExamShort = nameExamShort.replace("/", "_")
-        nameExamShort = nameExamShort.replace('"', '')
-        nameExamShort = nameExamShort[:30] #LIMITER à 30 CARACTERES
-        sheet.title = nameExamShort
-        sheet.append([academieExam, sessionExam, specialiteExam])
-    else: 
-        sheet.title = academie
-        sheet.append([academieExam, sessionExam])
     try:
         eleves = soup.find('tbody').find_all('tr')
 
@@ -121,37 +114,17 @@ for url in urls:
             prenoms = eleve.find('td', class_="mat-column-prenoms").text
             resultat = eleve.find('td', class_="mat-column-resultat").text
 
-            sheet.append([nom, prenoms, resultat])
+            nom = nom.replace("'", "_")
+            prenoms = prenoms.replace("'", "_")
+            resultat = resultat.replace("'", "_")
+
+            if isNone(specialiteExam):
+                sqlInsert = f"INSERT INTO `cyclades` VALUES ('{prenoms}', '{nom}', '{resultat}', '{academie}', '{exam}', Null, '{session}', '{groupe}', {etranger});"
+            else: 
+                sqlInsert = f"INSERT INTO `cyclades` VALUES ('{prenoms}', '{nom}', '{resultat}', '{academie}', '{exam}', '{specialiteExam}', '{session}', '{groupe}', {etranger});"
+            print(sqlInsert)
+            bddSql.sqlExecute(sqlInsert)
     except Exception as e:
         print(e)
-
-    #S'IL Y A SPECIALITE
-    if not isNone(specialiteExam):
-        excelName = specialiteExam
-        excelName = excelName[:-1]
-        excelName = excelName + ".xlsx"
-    else: 
-        excelName = academie
-        excelName = excelName + ".xlsx"
-    
-    path = f"data\\{academie}\\{exam}\\{session}\\{groupe}\\"
-    dataOrganize.verifFolderCreate(path)
-    
-    tempPathFile = "tmp\\" + excelName
-
-    maybeOldPathFile = path + excelName
-
-    excel.save(tempPathFile)
-
-    if dataOrganize.fichierExisteIdentique(maybeOldPathFile, tempPathFile):
-        os.remove(tempPathFile)
-    else:
-        newExcelName = incrAlreadyExist(excelName)
-
-        pathFile = path + newExcelName
-
-        os.remove(tempPathFile)
-        excel.save(pathFile)
-        print(newExcelName + " sauvegardé dans " + pathFile)
 
 scrapHtml.quitDriver()

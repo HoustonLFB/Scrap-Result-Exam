@@ -34,7 +34,7 @@ for publication in publications:
         print(link)
         links.append(link)
 
-nomFichier = 'AllautoUrlsScrapped.txt'
+nomFichier = '02082023.txt'
 
 with open(nomFichier, 'w') as fichier:
     # Écrire le contenu du fichier si nécessaire

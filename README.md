@@ -1,8 +1,6 @@
 # Scrap-Result-Exam
 
-Récupère chaque publication de résulats à date puis récupère tous les élèves des publications et les place dans un Excel .xlsx.
-
-Pour récupérer les données : voir les git branch (WIP) 
+Récupère chaque publication de résulats à date puis récupère tous les élèves des publications et les place dans une BDD SQL.
 
 ## Requirements
 

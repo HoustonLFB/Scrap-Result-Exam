@@ -35,6 +35,12 @@ def findSession(chaine):
     session = chaine.split(" - ")
     session = session[0]
     session = session.replace(" ", "")
+
+    if session[4] == "-":
+        session = session[:-1]
+        session = session[:-1]
+        session = session[:-1]
+
     return session
 
 def findGroupe(chaine):
@@ -105,6 +111,11 @@ for url in urls:
     groupe = findGroupe(sessionExam)
     etranger = estEtranger(academie)
 
+    if not isNone(specialiteExam):
+        print(academie + " " + exam + " " + specialiteExam)
+    else: 
+        print(academie + " " + exam)
+
     try:
         eleves = soup.find('tbody').find_all('tr')
 
@@ -122,7 +133,6 @@ for url in urls:
                 sqlInsert = f"INSERT INTO `cyclades` VALUES ('{prenoms}', '{nom}', '{resultat}', '{academie}', '{exam}', Null, '{session}', '{groupe}', {etranger});"
             else: 
                 sqlInsert = f"INSERT INTO `cyclades` VALUES ('{prenoms}', '{nom}', '{resultat}', '{academie}', '{exam}', '{specialiteExam}', '{session}', '{groupe}', {etranger});"
-            print(sqlInsert)
             bddSql.sqlExecute(sqlInsert)
     except Exception as e:
         print(e)

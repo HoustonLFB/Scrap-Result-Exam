@@ -51,7 +51,7 @@ def findGroupe(chaine):
     return groupe
 
 def estEtranger(academie):
-    liste = ["Normandie", "Caen", "Rouen", "Rennes", "Nantes", "Poitiers", "Bordeaux", "Toulouse", "Montpellier", "Aix-Marseille", "Nice", "Grenoble", "Lyon", "Clermont-Ferrand", "Limoges", "Orléans-Tours", "Dijon", "Besançon", "Strasbourg", "Nancy-Metz", "Reims", "Lille", "SIEC", "Amiens", "Corse", "Martinique", "Guadeloupe", "La_Réunion", "Guyane", "Mayotte", "Nouvelle-Calédonie", "Polynésie_Française", "St_Pierre_Et_Miquelon"]
+    liste = ["Normandie", "Orléans", "Caen", "Rouen", "Rennes", "Nantes", "Poitiers", "Bordeaux", "Toulouse", "Montpellier", "Aix-Marseille", "Nice", "Grenoble", "Lyon", "Clermont-Ferrand", "Limoges", "Orléans-Tours", "Dijon", "Besançon", "Strasbourg", "Nancy-Metz", "Reims", "Lille", "SIEC", "Amiens", "Corse", "Martinique", "Guadeloupe", "La_Réunion", "Guyane", "Mayotte", "Nouvelle-Calédonie", "Polynésie_Française", "St_Pierre_Et_Miquelon"]
 
     if academie in liste:
         return "0"
